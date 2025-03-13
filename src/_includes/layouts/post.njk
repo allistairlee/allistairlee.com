@@ -5,3 +5,40 @@ layout: base.njk
 {% block content %}
   {% include "snippets/post-content.njk" %}
 {% endblock %}
+
+<!-- Previous & Next Post Navigation -->
+{% set previousPost = false %}
+{% set nextPost = false %}
+{% set foundCurrentPost = false %}
+{% set currentIndex = 0 %}
+
+{% for post in collections.posts %}
+  {% if post.url == page.url %}
+    {% set foundCurrentPost = true %}
+    {% set currentIndex = loop.index0 %}
+  {% endif %}
+{% endfor %}
+
+{% if foundCurrentPost %}
+  {% if currentIndex > 0 %}
+    {% set previousPost = collections.posts[currentIndex - 1] %}
+  {% endif %}
+  {% if currentIndex < collections.posts | length - 1 %}
+    {% set nextPost = collections.posts[currentIndex + 1] %}
+  {% endif %}
+{% endif %}
+
+<!-- Centered Navigation Links -->
+<nav class="d-flex justify-content-between mt-5 border-top border-bottom py-4 text-center">
+  <div class="w-50 text-start">
+    {% if previousPost %}
+      <a href="{{ previousPost.url }}" class="text-dark text-decoration-none">&larr; {{ previousPost.data.title }}</a>
+    {% endif %}
+  </div>
+
+  <div class="w-50 text-end">
+    {% if nextPost %}
+      <a href="{{ nextPost.url }}" class="text-dark text-decoration-none">{{ nextPost.data.title }} &rarr;</a>
+    {% endif %}
+  </div>
+</nav>
