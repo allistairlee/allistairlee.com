@@ -1,5 +1,7 @@
 {
     "title": "Allistair Lee",
-    "description": "",
-    "language": "en"
+    "author": "Allistar Lee",
+    "description": "Personal blog of Allistair Lee.",
+    "language": "en",
+    "siteUrl": "https://allistairlee.com"
 }
