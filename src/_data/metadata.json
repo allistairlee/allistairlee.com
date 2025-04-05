@@ -1,7 +1,8 @@
 {
-    "title": "Allistair Lee",
-    "author": "Allistar Lee",
-    "description": "Personal blog of Allistair Lee.",
-    "language": "en",
-    "siteUrl": "https://allistairlee.com"
+  "title": "Allistair Lee",
+  "author": "Allistar Lee",
+  "description": "Personal blog of Allistair Lee.",
+  "language": "en",
+  "siteUrl": "https://allistairlee.com",
+  "timezone": "America/Chicago"
 }
