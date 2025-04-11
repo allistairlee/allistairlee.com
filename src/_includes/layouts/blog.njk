@@ -1,0 +1,35 @@
+---
+layout: base.njk
+---
+
+<header class="border-bottom mb-3">
+  <h1>My Posts</h1>
+</header>
+
+{% block content %}
+See all <a href="/tags/">tags</a>.
+  {% set currentYear = "" %}
+  {% for post in collections.posts %}
+    {% set postYear = post.date | formatDate('year') %}
+    {% if postYear != currentYear %}
+      {% if currentYear != "" %}
+        </ul>
+      {% endif %}
+      <h4 class="mt-4">{{ postYear }}</h4>
+      <ul>
+      {% set currentYear = postYear %}
+    {% endif %}
+    <li class="mb-2">
+      <time datetime="{{ post.date | formatDate('iso') }}">{{ post.date | formatDate }}</time> • 
+      <a href="{{ post.url }}">{{ post.data.title }}</a> • 
+      {% if post.data.tags %}
+        {% for tag in post.data.tags %}
+          <a href="/tags/{{ tag | slugify }}/" class="text-decoration-none text-dark">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      {% endif %}
+    </li>
+  {% endfor %}
+  {% if currentYear != "" %}
+    </ul>
+  {% endif %}
+{% endblock %}

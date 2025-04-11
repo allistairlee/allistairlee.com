@@ -1,0 +1,25 @@
+---
+layout: base.njk
+---
+
+<header class="border-bottom mb-3">
+    <h1>My Notes</h1>
+</header>
+
+{% block content %}
+  {% for tag in collections.tagList %}
+    {% set noteItems = collections.notes | filterByTag(tag) %}
+    {% if noteItems | length %}
+      <h4>{{ tag }}</h4>
+      <ul>
+        {% for note in noteItems %}
+          <li>
+            <a href="{{ note.url }}">
+              {{ note.data.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
