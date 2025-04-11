@@ -5,20 +5,18 @@
     {% include "snippets/head.njk" %}
   </head>
 
-  <body>
+  <body class="flex flex-col min-h-screen px-2{% if bodyClass %} {{ bodyClass }}{% endif %}">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-black dark:focus:bg-gray-800 dark:focus:text-white">Skip to content</a>
+
     {% if page.url != "/404.html" %}
       {% include "snippets/navbar.njk" %}
     {% endif %}
     
-    <main class="container">
-      <div class="row d-flex justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-          <div class="content">
-            {% block content %}
-              {{ content | safe }}
-            {% endblock %}
-          </div>
-        </div>
+    <main id="main-content" class="flex-1 w-full max-w-4xl mx-auto">
+      <div class="content">
+        {% block content %}
+          {{ content | safe }}
+        {% endblock %}
       </div>
     </main>
     
