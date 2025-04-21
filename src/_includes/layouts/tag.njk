@@ -2,19 +2,20 @@
 layout: base.njk
 ---
 
-<header class="border-bottom mb-3">
-    <h1>Posts Tagged: {{ tagName }} ({{ collections[tagName] | length }})</h1>
+{% set tagPosts = collections[tagName] | filterMd %}
+<header class="border-b border-gray-300 dark:border-gray-600 mb-3">
+    <h1>Posts Tagged: {{ tagName }} ({{ tagPosts | length }})</h1>
 </header>
   
-{% for post in collections[tagName] %}
-  <article class="mb-4 border-bottom pb-3">
+{% for post in tagPosts %}
+  <article class="mb-4 border-b border-gray-300 dark:border-gray-600 pb-3">
     <h2>
-      <a href="{{ post.url }}" class="text-decoration-none text-dark">{{ post.data.title }}</a>
+      <a href="{{ post.url }}">{{ post.data.title }}</a>
     </h2>
-    <p class="text-muted">
-      <time datetime="{{ post.date | formatDate('yyyy-LL-dd') }}">{{ post.date | formatDate('dd LLL yyyy') }}</time> • {{ post.templateContent | readingTime }} minutes
+    <p class="text-gray-500">
+      <time datetime="{{ post.date | formatDate('iso') }}">{{ post.date | formatDate }}</time> • {{ post.templateContent | readingTime }} minutes
     </p>
-    <p>{{ post.templateContent | removeStylesScripts | striptags | truncate(250, '...') }}</p>
-    <a href="{{ post.url }}" class="text-decoration-none">Read More →</a>
+    <p>{{ post.templateContent | removeStylesScripts | firstParagraph | striptags | truncate(250, '...') }}</p>
+    <a href="{{ post.url }}" class="no-underline">Read More →</a>
   </article>
 {% endfor %}
