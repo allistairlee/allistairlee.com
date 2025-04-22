@@ -1,0 +1,19 @@
+---
+layout: base.njk
+---
+
+<header class="border-b border-gray-300 dark:border-gray-600 mb-3">
+    <h1>{{ title }}</h1>
+</header>
+
+{% block content %}
+  <ul class="tag-list">
+    {% for tag in collections.tagList %}
+      <li>
+        <a href="/tags/{{ tag | slugify }}/">
+          {{ tag }} ({{ collections.all | filterByTag(tag) | length }})
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
