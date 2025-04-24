@@ -3,7 +3,7 @@ layout: base.njk
 ---
 
 {% block content %}
-  {% include "snippets/post-content.njk" %}
+  {% include "snippets/content.njk" %}
 {% endblock %}
 
 <!-- Previous & Next Post Navigation -->
@@ -29,16 +29,24 @@ layout: base.njk
 {% endif %}
 
 <!-- Centered Navigation Links -->
-<nav class="d-flex justify-content-between mt-5 border-top border-bottom py-4 text-center">
-  <div class="w-50 text-start">
+<nav aria-label="Post navigation" class="flex justify-between mt-12 border-t border-b border-gray-300 dark:border-gray-600 py-4">
+  <div class="w-1/2">
     {% if previousPost %}
-      <a href="{{ previousPost.url }}" class="text-dark text-decoration-none">&larr; {{ previousPost.data.title }}</a>
+      <a href="{{ previousPost.url }}" rel="prev" class="flex items-center gap-2">
+        <span class="shrink-0">&larr;</span>
+        <span>{{ previousPost.data.title }}</span>
+      </a>
     {% endif %}
   </div>
 
-  <div class="w-50 text-end">
+  <div class="w-px bg-gray-300 dark:bg-gray-600 mx-4 shrink-0"></div>
+
+  <div class="w-1/2 text-right">
     {% if nextPost %}
-      <a href="{{ nextPost.url }}" class="text-dark text-decoration-none">{{ nextPost.data.title }} &rarr;</a>
+      <a href="{{ nextPost.url }}" rel="next" class="flex items-center justify-end gap-2">
+        <span>{{ nextPost.data.title }}</span>
+        <span class="shrink-0">&rarr;</span>
+      </a>
     {% endif %}
   </div>
 </nav>
