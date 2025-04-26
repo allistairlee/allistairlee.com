@@ -1,0 +1,526 @@
+@import "tailwindcss";
+
+/*
+  Dark mode: uses `class` strategy via the `dark` class on <html>.
+  Tailwind v4 auto‑detects the class.
+*/
+
+/* ───────────────────────────────
+   Base / reset styles
+   ─────────────────────────────── */
+@layer base {
+
+  /* ───────────────────────────────
+     Custom theme tokens
+     ─────────────────────────────── */
+  :root {
+    --color-primary: #0d6efd;
+    --color-primary-dark: #6ea8fe;
+    --color-muted: #6c757d;
+    --color-border: #dee2e6;
+    --color-dark-border: #444;
+    --color-bg: #ffffff;
+    --color-text: #212529;
+    --color-surface: #f8f9fa;
+    --color-surface-alt: #ebebef;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 300;
+    letter-spacing: 0.25px;
+  }
+
+  /* Headings */
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5em;
+    letter-spacing: 0.25px;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: 2em;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.6em;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 1.3em;
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-size: 1.125em;
+    line-height: 1.4;
+  }
+
+  h5 {
+    font-size: 1em;
+    line-height: 1.5;
+  }
+
+  h6 {
+    font-size: .8em;
+    line-height: 1.5;
+  }
+
+  /* Links inside article content */
+  .content a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
+  }
+
+  .content a:hover {
+    text-decoration: underline;
+  }
+
+  /* Paragraphs */
+  .content p {
+    margin-bottom: 1rem;
+  }
+
+  .content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Inline Formatting */
+  .content b,
+  .content strong {
+    font-weight: 700;
+  }
+
+  .content i,
+  .content em {
+    font-style: italic;
+  }
+
+  /* Lists */
+  .content ul,
+  .content ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+  }
+
+  .content ul {
+    list-style-type: disc;
+  }
+
+  .content ol {
+    list-style-type: decimal;
+  }
+
+  .content li {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Code blocks */
+  pre {
+    background-color: #000;
+    color: #fff;
+    padding: 1.5rem;
+    overflow-x: auto;
+    border-radius: 5px;
+    line-height: 1.25;
+  }
+
+  pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  /* Blockquotes */
+  blockquote {
+    border-left: 3px solid #000;
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #444;
+  }
+
+  blockquote p {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Tables */
+  .content table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+
+  .content th,
+  .content td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .content th {
+    background-color: var(--color-surface);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .content tr:nth-child(even) {
+    background-color: var(--color-surface-alt);
+  }
+
+  .dark blockquote {
+    border-left-color: #ccc;
+    color: #bbb;
+  }
+
+  /* Figures / images */
+  figure {
+    max-width: 90vw;
+    margin: 2rem auto;
+    text-align: center;
+  }
+
+  figure img {
+    width: 90vw;
+    max-width: 1000px;
+    height: auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
+
+  figcaption {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin-top: 0.5rem;
+  }
+
+  /* Make SVG text inherit the global text colors for dark-mode support */
+  svg text {
+    fill: currentColor;
+  }
+
+  /* Dark mode body */
+  .dark {
+    --color-bg: #212529;
+    --color-text: #dee2e6;
+    --color-border: #444;
+    --color-surface: #2a2a30;
+    --color-surface-alt: #222228;
+    --color-muted: #9a9aa6;
+  }
+
+  .dark a {
+    color: #dee2e6;
+  }
+
+  /* Dark mode content links */
+  .dark .content a {
+    color: var(--color-primary-dark);
+  }
+
+  /* Footer link styling */
+  footer a {
+    text-decoration: underline;
+  }
+
+  /* Footer text styling */
+  footer {
+    font-size: 12px;
+    font-weight: 300;
+  }
+
+  /* Content padding for mobile consistency */
+  .content {
+    padding: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .content {
+      padding: 2rem 1rem;
+    }
+  }
+}
+
+/* ───────────────────────────────
+   Component styles
+   ─────────────────────────────── */
+@layer components {
+
+  /* Bleed effect */
+  .bleed-90 {
+    width: 90vw;
+    max-width: 1200px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-x: hidden;
+  }
+
+  /* Home page hero */
+  .home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 2rem 1rem;
+  }
+
+  /* 404 page */
+  .page-404 main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .page-404-content {
+    text-align: center;
+  }
+
+  /* Project list */
+  .project-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .project {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .project a {
+    font-weight: 500;
+    text-decoration: underline;
+  }
+
+  .project .status {
+    font-size: 0.9rem;
+    color: gray;
+    white-space: nowrap;
+  }
+
+  /* Wave animation */
+  .wave {
+    font-size: 1.5em;
+    animation-name: wave-animation;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    transform-origin: 70% 70%;
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wave {
+      animation: none;
+    }
+  }
+
+  @keyframes wave-animation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    10% {
+      transform: rotate(14deg);
+    }
+
+    20% {
+      transform: rotate(-8deg);
+    }
+
+    30% {
+      transform: rotate(14deg);
+    }
+
+    40% {
+      transform: rotate(-4deg);
+    }
+
+    50% {
+      transform: rotate(10deg);
+    }
+
+    60% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  /* Mobile nav menu */
+  .nav-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+
+  .nav-menu.open {
+    max-height: 300px;
+  }
+
+  /* Global Chart Loading Skeleton */
+  .chart-skeleton {
+    --skeleton-bg: #f8f9fa;
+    --skeleton-shimmer: #dee2e6;
+    --skeleton-text: var(--color-muted);
+
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    background: linear-gradient(90deg, var(--skeleton-bg) 25%, var(--skeleton-shimmer) 50%, var(--skeleton-bg) 75%);
+    background-size: 200% 100%;
+    animation: chart-loading 1.5s infinite linear;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--skeleton-text);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .dark .chart-skeleton {
+    --skeleton-bg: #2a2a30;
+    --skeleton-shimmer: #3a3a40;
+    --skeleton-text: #9a9aa6;
+  }
+
+  @keyframes chart-loading {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Source Credit */
+  .source-credit {
+    text-align: right;
+    padding: 8px 0;
+    font-size: 0.8em;
+    color: var(--color-muted);
+  }
+
+  .source-credit a {
+    color: var(--color-primary);
+  }
+
+  .dark .source-credit a {
+    color: var(--color-primary-dark);
+  }
+
+  /* Global Chart Base */
+  .chart {
+    min-height: 200px;
+    margin-top: 12px;
+  }
+
+  /* Make SVG line and paths inherit text colors for dark-mode support */
+  svg line,
+  svg path.domain {
+    stroke: currentColor;
+    opacity: 0.2;
+  }
+
+  /* D3 Tooltip */
+  .chart-tooltip {
+    position: absolute;
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 300px;
+    word-wrap: break-word;
+    white-space: normal;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    font-size: 12px;
+  }
+
+  .chart-tooltip img {
+    width: 50px;
+    max-width: none;
+    height: auto;
+    position: static;
+    transform: none;
+    left: auto;
+    border-radius: 4px;
+  }
+
+  .chart-tooltip hr {
+    margin: 5px 0;
+    border-color: var(--color-border);
+  }
+
+  @media (max-width: 600px) {
+    .chart-tooltip {
+      max-width: 60vw;
+      padding: 8px;
+      font-size: 11px;
+    }
+  }
+
+  /* D3 Chart Legend */
+  .chart-title {
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.95em;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    color: var(--color-text);
+  }
+
+  .chart-caption {
+    text-align: center;
+    font-size: 0.85em;
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+    margin-bottom: 2.5rem;
+    padding: 0 1rem;
+    font-style: italic;
+  }
+
+  .chart-legend {
+    pointer-events: none;
+  }
+
+  .chart-legend-bg {
+    fill: var(--color-bg);
+    stroke: var(--color-border);
+  }
+
+  .chart-legend-label {
+    font-size: 12px;
+    fill: var(--color-text);
+  }
+}
