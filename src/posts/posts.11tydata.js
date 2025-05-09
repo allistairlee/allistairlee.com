@@ -1,5 +1,6 @@
 export default {
-  layout: "blog-post.njk",
+  layout: "post.njk",
+  date: "git Created",
   eleventyComputed: {
     permalink: (data) => {
       if (data.permalink) {
