@@ -1,11 +1,9 @@
 import { feedPlugin } from "@11ty/eleventy-plugin-rss";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
-import bundlerPlugin from "@11ty/eleventy-plugin-bundle";
 import fs from "fs";
 import postcss from "postcss";
 import tailwindcss from "@tailwindcss/postcss";
-import autoprefixer from "autoprefixer";
 
 const metadata = JSON.parse(fs.readFileSync("./src/_data/metadata.json", "utf-8"));
 
@@ -48,9 +46,6 @@ export default async function (eleventyConfig) {
   // Syntax Highlighting plugin
   eleventyConfig.addPlugin(syntaxHighlight);
 
-  // Bundle plugin for CSS/JS optimization
-  eleventyConfig.addPlugin(bundlerPlugin);
-
   // Configure Eleventy
   eleventyConfig.setInputDirectory("src");
   eleventyConfig.setLayoutsDirectory("_includes/layouts");
@@ -78,7 +73,6 @@ export default async function (eleventyConfig) {
         return async () => {
           let result = await postcss([
             tailwindcss(),
-            autoprefixer(),
           ]).process(inputContent, { from: inputPath });
 
           return result.css;
