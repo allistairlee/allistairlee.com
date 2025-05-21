@@ -156,7 +156,9 @@ export default async function (eleventyConfig) {
 
   // Create a collection for blog posts
   eleventyConfig.addCollection("posts", function (collectionApi) {
+    const now = new Date();
     return collectionApi.getFilteredByGlob("src/posts/**/*.md")
+      .filter(post => post.date <= now)
       .sort((a, b) => b.date - a.date);
   });
 
