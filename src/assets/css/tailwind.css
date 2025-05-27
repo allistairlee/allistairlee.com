@@ -5,14 +5,10 @@
   Tailwind v4 auto‑detects the class.
 */
 
-/* ───────────────────────────────
-   Base / reset styles
-   ─────────────────────────────── */
+/* Base / reset styles */
 @layer base {
 
-  /* ───────────────────────────────
-     Custom theme tokens
-     ─────────────────────────────── */
+  /* Custom theme tokens */
   :root {
     --color-primary: #0d6efd;
     --color-primary-dark: #6ea8fe;
@@ -36,7 +32,6 @@
       "Liberation Mono", "Courier New", monospace;
     font-size: 14px;
     line-height: 1.6;
-    font-weight: 300;
     letter-spacing: 0.25px;
   }
 
@@ -259,9 +254,7 @@
   }
 }
 
-/* ───────────────────────────────
-   Component styles
-   ─────────────────────────────── */
+/* Component styles */
 @layer components {
 
   /* Bleed effect */
