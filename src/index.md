@@ -2,10 +2,10 @@
 layout: home
 ---
 
-Hey there! <span class="wave">👋</span> Welcome to my little corner of the internet.
+Hey there! <span class="wave">👋</span> Welcome to my corner of the internet.
 
-I work with data, build tools that help people think more clearly, and write about what I learn along the way.
+I believe the hardest problems aren't solved by adding more noise - they're solved by asking the right questions with clear intention.
 
-I care about cutting through the noise — in how we use technology, how we make decisions, and how we present information. If it's not useful, it's clutter.
+Whether I'm architecting data strategies or exploring a new curiosity, my focus is always the same: stripping away the noise to find the signal. For me, finding what actually matters is the goal; providing the clarity to get there is the path.
 
-This space is where I share my [reflections](/posts), [ideas](/notes), and the occasional rabbit hole worth going down. If something here resonates, see what I'm working on [now](/now).
+This space is my digital garden - a collection of [reflections](/posts), [growing ideas](/notes), and the occasional rabbit hole. If something here resonates, see what I'm working on [now](/now).
