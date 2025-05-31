@@ -54,7 +54,11 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/img");
   eleventyConfig.addPassthroughCopy("src/assets/js");
 
-  // Process CSS files through PostCSS (Tailwind)
+  // Ignore CSS files inside src/posts/ so the template engine never processes them.
+  // They are served via passthrough copy (below) at the correct path.
+  eleventyConfig.ignores.add("src/posts/**/*.css");
+
+  // Process CSS files through PostCSS (Tailwind) - only src/assets/css/ reaches here
   eleventyConfig.addTemplateFormats("css");
   eleventyConfig.addExtension("css", {
     outputFileExtension: "css",
@@ -83,7 +87,7 @@ export default async function (eleventyConfig) {
       return async () => inputContent;
     },
   });
-  eleventyConfig.addPassthroughCopy("src/posts/**/*.{js,json,csv}");
+  eleventyConfig.addPassthroughCopy("src/posts/**/*.{js,json,csv,css}");
 
   // Shortcode
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`); // Footer
@@ -167,7 +171,7 @@ export default async function (eleventyConfig) {
     return collectionApi.getFilteredByGlob("src/notes/**/*.md");
   });
 
-  // Create a collection for all unique tags
+  // Create a collection for all unique tags, sorted alphabetically
   eleventyConfig.addCollection("tagList", function (collectionApi) {
     let tagSet = new Set();
     collectionApi.getAll().forEach(item => {
