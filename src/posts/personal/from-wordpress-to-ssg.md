@@ -20,7 +20,7 @@ So I switched to Hugo. All the posts that I've read about how fast it was, it's 
 
 ### Then I found Eleventy (11ty)
 
-And then, I found [11ty](https://11ty.dev). It clicked with me immediately for some reason because building with it, it felt like I was back in the early days of the web — just me and some HTML, CSS and JavaScript. No magic, no hidden "blocks" I couldn't figure out how to move. Just a straightforward way to build a site that looks exactly how I want it to. It doesn't force me to use a specific language or a weird folder structure. It just works. 
+And then, I found [11ty](https://11ty.dev). It clicked with me immediately for some reason because building with it, it felt like I was back in the early days of the web - just me and some HTML, CSS and JavaScript. No magic, no hidden "blocks" I couldn't figure out how to move. Just a straightforward way to build a site that looks exactly how I want it to. It doesn't force me to use a specific language or a weird folder structure. It just works. 
 
 ### How it’s going
 

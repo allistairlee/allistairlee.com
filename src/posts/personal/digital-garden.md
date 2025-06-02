@@ -6,7 +6,7 @@ Recently came across [this article](https://maggieappleton.com/garden-history) a
 
 ### Why /notes?
 
-The problem I had with WordPress — and my old mindset around blogging — was that every post felt like it had to be a *perfect* piece of work. It needed a catchy headline, a polished intro, and a tidy concluding thought. If I didn't have all the answers yet, the post just sat in my drafts folder until it became irrelevant - mostly due to me spending time fighting the "expectations" of what a blog should be rather than writing.
+The problem I had with WordPress - and my old mindset around blogging - was that every post felt like it had to be a *perfect* piece of work. It needed a catchy headline, a polished intro, and a tidy concluding thought. If I didn't have all the answers yet, the post just sat in my drafts folder until it became irrelevant - mostly due to me spending time fighting the "expectations" of what a blog should be rather than writing.
 
 Now that I've [switched to 11ty](/posts/from-wordpress-to-ssg/), it's much easier to just write and commit without worrying about it being perfect. 
 
