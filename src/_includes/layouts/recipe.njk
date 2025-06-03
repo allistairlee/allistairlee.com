@@ -1,0 +1,60 @@
+---
+layout: post.njk
+---
+
+<div class="mb-4 text-sm mt-6 border-b border-gray-200 dark:border-gray-800 pb-4 flex flex-col gap-1">
+  {% if image %}
+  <div class="mb-6">
+    <img src="{{ image }}" alt="{{ title }}" class="w-full h-auto object-cover rounded-lg aspect-video shadow-sm" loading="lazy" decoding="async" />
+  </div>
+  {% endif %}
+
+  {% if category %}
+  <div class="flex items-center py-1 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded -mx-2 px-2 transition-colors">
+    <div class="w-40 text-gray-500 shrink-0">
+      <span>Category</span>
+    </div>
+    <div class="flex-1 text-gray-900 dark:text-gray-100">{{ category }}</div>
+  </div>
+  {% endif %}
+
+  {% if prepTime %}
+  <div class="flex items-center py-1 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded -mx-2 px-2 transition-colors">
+    <div class="w-40 text-gray-500 shrink-0">
+      <span>Prep time</span>
+    </div>
+    <div class="flex-1 text-gray-900 dark:text-gray-100">{{ prepTime }}</div>
+  </div>
+  {% endif %}
+
+  {% if cookingTime %}
+  <div class="flex items-center py-1 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded -mx-2 px-2 transition-colors">
+    <div class="w-40 text-gray-500 shrink-0">
+      <span>Cooking time</span>
+    </div>
+    <div class="flex-1 text-gray-900 dark:text-gray-100">{{ cookingTime }}</div>
+  </div>
+  {% endif %}
+
+  {% if totalTime %}
+  <div class="flex items-center py-1 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded -mx-2 px-2 transition-colors">
+    <div class="w-40 text-gray-500 shrink-0">
+      <span>Total time</span>
+    </div>
+    <div class="flex-1 text-gray-900 dark:text-gray-100">{{ totalTime }}</div>
+  </div>
+  {% endif %}
+
+  {% if servings %}
+  <div class="flex items-center py-1 hover:bg-gray-100 dark:hover:bg-gray-800/50 rounded -mx-2 px-2 transition-colors">
+    <div class="w-40 text-gray-500 shrink-0">
+      <span>Servings</span>
+    </div>
+    <div class="flex-1 text-gray-900 dark:text-gray-100">{{ servings }}</div>
+  </div>
+  {% endif %}
+</div>
+
+<div>
+  {{ content | safe }}
+</div>
