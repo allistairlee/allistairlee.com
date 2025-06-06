@@ -53,6 +53,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addGlobalData("layout", "base.njk");
   eleventyConfig.addPassthroughCopy("src/assets/img");
   eleventyConfig.addPassthroughCopy("src/assets/js");
+  eleventyConfig.addPassthroughCopy({ "src/assets/img/favicon.ico": "/favicon.ico" });
 
   // Ignore CSS files inside src/posts/ so the template engine never processes them.
   // They are served via passthrough copy (below) at the correct path.
