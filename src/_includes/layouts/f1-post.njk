@@ -1,0 +1,77 @@
+---
+layout: base.njk
+---
+
+{% block content %}
+<article>
+  <header class="border-b border-gray-300 dark:border-gray-600 mb-3">
+    <h1>{{ title }}</h1>
+  </header>
+
+  <aside>
+    <p class="mb-8">
+      <time datetime="{{ page.date | formatDate('iso') }}">
+        {{ page.date | formatDate }}
+      </time> • {{ content | readingTime }} minutes
+
+      {% if tags %}
+        • 
+        {% for tag in tags %}
+          <a href="/tags/{{ tag | slug }}/">{{ tag }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      {% endif %}
+    </p>
+  </aside>
+
+  <div class="callout">
+    <strong>Note:</strong> Part of a series of post-race F1 data breakdowns. All race data sourced from <a href="https://openf1.org/" target="_blank">OpenF1</a>.
+  </div>
+
+  {{ content | safe }}
+</article>
+{% endblock %}
+
+<!-- Previous & Next Post Navigation -->
+{% set previousPost = false %}
+{% set nextPost = false %}
+{% set foundCurrentPost = false %}
+{% set currentIndex = 0 %}
+
+{% for post in collections.posts %}
+  {% if post.url == page.url %}
+    {% set foundCurrentPost = true %}
+    {% set currentIndex = loop.index0 %}
+  {% endif %}
+{% endfor %}
+
+{% if foundCurrentPost %}
+  {% if currentIndex > 0 %}
+    {% set previousPost = collections.posts[currentIndex - 1] %}
+  {% endif %}
+  {% if currentIndex < collections.posts | length - 1 %}
+    {% set nextPost = collections.posts[currentIndex + 1] %}
+  {% endif %}
+{% endif %}
+
+<!-- Centered Navigation Links -->
+<nav aria-label="Post navigation" class="flex justify-between mt-12 border-t border-b border-gray-300 dark:border-gray-600 py-4">
+  <div class="w-1/2">
+    {% if previousPost %}
+      <a href="{{ previousPost.url }}" rel="prev" class="flex items-center gap-2">
+        <span class="shrink-0">&larr;</span>
+        <span>{{ previousPost.data.title }}</span>
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="w-px bg-gray-300 dark:bg-gray-600 mx-4 shrink-0"></div>
+
+  <div class="w-1/2 text-right">
+    {% if nextPost %}
+      <a href="{{ nextPost.url }}" rel="next" class="flex items-center justify-end gap-2">
+        <span>{{ nextPost.data.title }}</span>
+        <span class="shrink-0">&rarr;</span>
+      </a>
+    {% endif %}
+  </div>
+</nav>
