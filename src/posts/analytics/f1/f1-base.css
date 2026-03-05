@@ -1,0 +1,434 @@
+/* F1 Base Styles — Used across ALL F1 Race Posts */
+
+/* Global Chart Typography */
+#chart-stint,
+.constructors-bar,
+svg text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace !important;
+}
+
+svg text {
+  fill: var(--color-text);
+  font-size: 11px;
+}
+
+.tick text {
+  font-size: 11px;
+  fill: var(--color-muted);
+}
+
+/* Hero Stats */
+.hero-stats {
+  display: flex;
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.hero-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border-right: 1px solid var(--color-border);
+  gap: 4px;
+}
+
+.hero-stat:last-child {
+  border-right: none;
+}
+
+.hero-stat__value {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.5px;
+}
+
+.hero-stat__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .hero-stat:nth-child(2) {
+    border-right: none;
+  }
+
+  .hero-stat:nth-child(3) {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--color-border);
+    border-right: none;
+  }
+}
+
+/* Strategy Legend */
+.strategy-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 11px;
+  color: var(--color-text);
+  padding-left: 120px;
+  padding-right: 80px;
+  box-sizing: border-box;
+}
+
+.strategy-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strategy-legend__bar {
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.strategy-legend__title {
+  font-weight: 500;
+}
+
+.strategy-legend__note {
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.strategy-legend__compounds {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.strategy-legend__compound {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Tyre Compounds */
+.compound {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.compound--M {
+  background: #ffd43b;
+  border-color: #e6b800;
+}
+
+.compound--H {
+  background: #e8e8e8;
+  border-color: #ccc;
+}
+
+.compound--S {
+  background: #ff5252;
+  border-color: #cc0000;
+}
+
+.compound--I {
+  background: #4caf50;
+  border-color: #388e3c;
+}
+
+.compound--W {
+  background: #2196f3;
+  border-color: #1565c0;
+}
+
+.compound--UNKNOWN {
+  background: #aaa;
+  border-color: #888;
+}
+
+/* Strategy Gantt */
+#chart-stint {
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.gantt-header {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.gantt-driver-col {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.gantt-laps {
+  flex: 1;
+  position: relative;
+  height: 18px;
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+.gantt-laps span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.gantt-row {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.gantt-driver {
+  width: 120px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  box-sizing: border-box;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.gantt-driver__stripe {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.gantt-track {
+  flex: 1;
+  position: relative;
+  height: 26px;
+}
+
+.gantt-stint {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #000;
+  box-sizing: border-box;
+}
+
+.gantt-stint.compound--S {
+  background: #ff5252;
+}
+
+.gantt-stint.compound--M {
+  background: #ffd43b;
+}
+
+.gantt-stint.compound--H {
+  background: #e8e8e8;
+}
+
+.gantt-stint.compound--I {
+  background: #4caf50;
+}
+
+.gantt-stint.compound--W {
+  background: #2196f3;
+}
+
+.gantt-stint.compound--UNKNOWN {
+  background: #aaa;
+}
+
+.gantt-vsc {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  border-radius: 1px;
+  z-index: 2;
+}
+
+.gantt-stops {
+  width: 80px;
+  flex-shrink: 0;
+  text-align: left;
+  padding-left: 8px;
+  box-sizing: border-box;
+  font-size: 11px;
+  color: var(--color-muted);
+  letter-spacing: 0.3px;
+}
+
+/* Driver Cards */
+.driver-cards {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.driver-card {
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-border);
+  border-radius: 0 6px 6px 0;
+  padding: 1rem 1.25rem;
+  background: var(--color-surface);
+  transition: border-left-color 0.3s ease;
+}
+
+.driver-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.driver-card__name {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--color-text);
+}
+
+.driver-card__team {
+  font-size: 11px;
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.driver-card__result {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-muted);
+  letter-spacing: 0.5px;
+  background: var(--color-surface-alt);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.driver-card__delta {
+  font-size: 11px;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
+}
+
+.driver-card__delta strong {
+  color: var(--color-text);
+}
+
+.driver-card__note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+#driver-cards blockquote {
+  border-left-width: 4px;
+  background: var(--color-surface);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 6px 6px 0;
+  margin: 1.5rem 0;
+  font-style: normal;
+  border-left-color: var(--color-border);
+  transition: border-color 0.3s ease;
+}
+
+#driver-cards blockquote p {
+  margin: 0;
+}
+
+#driver-cards blockquote strong {
+  color: var(--color-text);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+/* Callout */
+.callout {
+  border-left: 4px solid var(--color-primary);
+  background: var(--color-surface);
+  padding: 1rem 1.25rem;
+  border-radius: 0 6px 6px 0;
+  margin: 1.5rem 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--color-text);
+  font-style: normal;
+}
+
+.callout strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+/* Next Race Footer */
+.next-race {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  margin-top: 2.5rem;
+}
+
+.next-race__label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-muted);
+}
+
+.next-race__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.25px;
+}
+
+.next-race__meta {
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+/* Tooltip */
+.chart-tooltip {
+  position: absolute;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 11px;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  line-height: 1.5;
+  min-width: 120px;
+}
