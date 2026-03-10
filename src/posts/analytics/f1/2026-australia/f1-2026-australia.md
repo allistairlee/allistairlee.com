@@ -186,9 +186,9 @@ We're one race in, and Mercedes lead both championships after a perfect 1–2 �
 
 McLaren's total reflects the Piastri DNS more than the car's actual speed. That zero doesn't define their championship, but it does eat into the buffer for the rest of the year.
 
-Red Bull's constructors' tally looks modest — but honestly, between the qualifying crash and Hadjar's DNF, a total of zero was genuinely on the cards. This is damage limitation, and the pace chart says they'll be in a very different position soon.
+Red Bull's constructors' tally looks modest — but honestly, between the qualifying crash and Hadjar's DNF, a total of zero was on the cards. This is damage limitation, and the pace chart says they'll be in a very different position soon.
 
-Can't wait to see how this unfolds in Shanghai.
+Box, box — see you next race. 🏎️
 
 <div class="next-race">
   <div class="next-race__label">Up Next</div>
