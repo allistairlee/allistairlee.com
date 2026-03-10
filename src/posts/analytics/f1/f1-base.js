@@ -967,6 +967,19 @@
   };
 
   /* UI Helpers */
+  F1Base.initSkeleton = function (ids, msg) {
+    if (window.ChartUtils) {
+      ChartUtils.initSkeleton(Array.isArray(ids) ? ids : [ids], msg || "Loading race data\u2026");
+    } else {
+      // Fallback if ChartUtils isn't loaded
+      const idList = Array.isArray(ids) ? ids : [ids];
+      idList.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '<div class="chart-skeleton">' + (msg || "Loading race data\u2026") + '</div>';
+      });
+    }
+  };
+
   F1Base.colorizeDriverCards = function (containerId) {
     var el = document.getElementById(containerId);
     if (!el) return;
@@ -1106,10 +1119,7 @@
     }, config.chartIds || {});
 
     // Loading skeleton
-    Object.values(ids).forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.innerHTML = '<div class="chart-skeleton">Loading race data…</div>';
-    });
+    this.initSkeleton(Object.values(ids));
 
     // 1. Fetch OpenF1 race data
     var data = await this.fetchAllRaceData(config.year, config.country);

@@ -1,0 +1,16 @@
+/* Australian GP 2026 — Post-Specific Styles
+   
+   All reusable styles (hero, cards, gantt, next-race, etc.)
+   live in f1-base.css. Only race-specific overrides belong here.
+*/
+
+/* Simulated speed trace (2025 vs 2026) */
+#chart-telemetry {
+  min-height: 320px;
+}
+
+@media (max-width: 600px) {
+  #chart-telemetry {
+    min-height: 240px;
+  }
+}
