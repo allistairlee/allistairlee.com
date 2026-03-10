@@ -1,9 +1,4 @@
-/* F1 2026 Australian GP — Race-Specific Charts
-   
-  Base charts (gap, stint, pace, championships) are handled
-  by F1Base.initBaseCharts(). This file adds:
-    - Telemetry trace: 2025 vs 2026 regulation comparison
-*/
+/* F1 2026 Australia Race — Race-Specific JS */
 (function () {
   "use strict";
 

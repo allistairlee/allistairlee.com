@@ -1,0 +1,12 @@
+/* Australian GP 2026 — Post-Specific Styles*/
+
+/* Simulated speed trace (2025 vs 2026) */
+#chart-telemetry {
+  min-height: 320px;
+}
+
+@media (max-width: 600px) {
+  #chart-telemetry {
+    min-height: 240px;
+  }
+}
