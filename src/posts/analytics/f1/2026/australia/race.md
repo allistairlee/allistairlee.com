@@ -2,7 +2,7 @@
 title: "F1 2026 Australia: The New Era Begins"
 css:
   - /posts/analytics/f1/f1-base.css
-  - /posts/analytics/f1/2026/australia/rIf raceace.css
+  - /posts/analytics/f1/2026/australia/race.css
 js:
   - /posts/analytics/f1/f1-base.js
   - /posts/analytics/f1/2026/australia/race.js
