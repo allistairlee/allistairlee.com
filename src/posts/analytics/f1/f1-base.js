@@ -1,14 +1,14 @@
 /* F1 Base — Reusable Charts & Data Layer for F1 Race Posts
 
-   Base provides 5 standard charts for every race post:
-     1. Final Classification — Gap to Leader (Top 10)
-     2. Stint Strategy (Top 10) with VSC/SC overlays
-     3. Race Pace (Box Plot)
-     4. Drivers' Championship (auto-calculated from API)
-     5. Constructors' Championship (auto-calculated from API)
+  Base provides 5 standard charts for every race post:
+    1. Final Classification — Gap to Leader (Top 10)
+    2. Stint Strategy (Top 10) with VSC/SC overlays
+    3. Race Pace (Box Plot)
+    4. Drivers' Championship (auto-calculated from API)
+    5. Constructors' Championship (auto-calculated from API)
 
-   Race-specific JS files call F1Base.initBaseCharts(config)
-   and then layer on any optional per-race analysis.
+  Race-specific JS files call F1Base.initBaseCharts(config)
+  and then layer on any optional per-race analysis.
 */
 (function () {
   "use strict";
@@ -79,8 +79,8 @@
   };
 
   /* Fetch OpenF1 data */
-  F1Base.fetchAllRaceData = async function (year, countryName) {
-    var _cacheKey = "f1_race_" + year + "_" + countryName.replace(/\s+/g, "_");
+  F1Base.fetchAllRaceData = async function (year, countryName, sessionName) {
+    var _cacheKey = "f1_" + sessionName.toLowerCase() + "_" + year + "_" + countryName.replace(/\s+/g, "_");
     var _cached = window.ApiCache && ApiCache.get(_cacheKey);
     if (_cached) {
       Object.values(_cached.driverMap || {}).forEach(function (d) {
@@ -122,7 +122,7 @@
 
       // 1. Session key
       var sessions = await this.fetchWithRetry(
-        "https://api.openf1.org/v1/sessions?year=" + year + "&country_name=" + encodeURIComponent(countryName) + "&session_name=Race"
+        "https://api.openf1.org/v1/sessions?year=" + year + "&country_name=" + encodeURIComponent(countryName) + "&session_name=" + encodeURIComponent(sessionName)
       );
       if (!sessions || sessions.length === 0) return result;
       result.session = sessions[0];
@@ -218,9 +218,17 @@
       result.raceControl = rc;
       result.allLaps = allLaps;
 
-      if (allLaps.length > 0) {
-        result.totalLaps = d3.max(allLaps, function (l) { return l.lap_number; }) || 0;
-      }
+      // Derive totalLaps: prefer laps data, fall back to stints, then race_control
+      var _totalFromLaps = allLaps.length > 0
+        ? d3.max(allLaps, function (l) { return l.lap_number; }) || 0
+        : 0;
+      var _totalFromStints = stints.length > 0
+        ? d3.max(stints, function (s) { return s.lap_end || 0; }) || 0
+        : 0;
+      var _totalFromRC = rc.length > 0
+        ? d3.max(rc, function (r) { return r.lap_number || 0; }) || 0
+        : 0;
+      result.totalLaps = Math.max(_totalFromLaps, _totalFromStints, _totalFromRC);
 
       // Fastest lap
       var validLaps = allLaps.filter(function (l) {
@@ -283,7 +291,7 @@
       }).filter(function (d) { return d.avg > 0; })
         .sort(function (a, b) { return a.avg - b.avg; });
 
-      // Build team average pit lane times
+      // Build team average pit lane times + per-driver stop details
       var _teamPitMap = {};
       var _selfPit = this;
       result.pitStops.forEach(function (p) {
@@ -291,17 +299,25 @@
         var d = result.driverMap[p.driver_number];
         if (!d || !d.team_name) return;
         var team = d.team_name;
-        if (!_teamPitMap[team]) _teamPitMap[team] = { team: team, total: 0, count: 0 };
+        if (!_teamPitMap[team]) _teamPitMap[team] = { team: team, total: 0, count: 0, drivers: [] };
         _teamPitMap[team].total += p.pit_duration;
         _teamPitMap[team].count += 1;
+        _teamPitMap[team].drivers.push({
+          acronym: d.name_acronym || d.last_name,
+          lap: p.lap_number,
+          duration: p.pit_duration,
+        });
       });
       result.teamPitData = Object.values(_teamPitMap)
         .filter(function (t) { return t.count > 0; })
         .map(function (t) {
+          // Sort driver stops by duration (fastest first)
+          t.drivers.sort(function (a, b) { return a.lap - b.lap; });
           return {
             team: t.team,
             avg: t.total / t.count,
             count: t.count,
+            drivers: t.drivers,
             color: _selfPit.getTeamColor(t.team),
           };
         })
@@ -394,36 +410,64 @@
       return _cachedStandings;
     }
 
-    var POINTS = { 1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1 };
+    var RACE_POINTS = { 1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1 };
+    var SPRINT_POINTS = { 1: 8, 2: 7, 3: 6, 4: 5, 5: 4, 6: 3, 7: 2, 8: 1 };
     var driverTotals = {};
     var round = 1;
 
     try {
-      // Cache the sessions list — stable between loads, but new races get added through the year
+      // Cache the sessions lists — stable between loads, but new races get added through the year
       var _sessionsKey = "f1_sessions_" + year;
-      var sessions = window.ApiCache && ApiCache.get(_sessionsKey);
-      if (!sessions) {
-        sessions = await this.fetchWithRetry(
+      var raceSessions = window.ApiCache && ApiCache.get(_sessionsKey);
+      if (!raceSessions) {
+        raceSessions = await this.fetchWithRetry(
           "https://api.openf1.org/v1/sessions?year=" + year + "&session_name=Race"
         );
-        if (window.ApiCache && sessions && sessions.length) {
-          ApiCache.set(_sessionsKey, sessions, 6 * 60 * 60 * 1000); // 6 hours
+        if (window.ApiCache && raceSessions && raceSessions.length) {
+          ApiCache.set(_sessionsKey, raceSessions, 6 * 60 * 60 * 1000); // 6 hours
         }
       }
-      if (!sessions || !sessions.length) return null;
 
-      sessions.sort(function (a, b) { return a.date_start < b.date_start ? -1 : a.date_start > b.date_start ? 1 : 0; });
+      var _sprintSessionsKey = "f1_sprint_sessions_" + year;
+      var sprintSessions = window.ApiCache && ApiCache.get(_sprintSessionsKey);
+      if (!sprintSessions) {
+        try {
+          sprintSessions = await this.fetchWithRetry(
+            "https://api.openf1.org/v1/sessions?year=" + year + "&session_name=Sprint"
+          );
+        } catch (e) { sprintSessions = []; }
+        if (window.ApiCache) {
+          ApiCache.set(_sprintSessionsKey, sprintSessions || [], 6 * 60 * 60 * 1000);
+        }
+      }
+      if (!sprintSessions) sprintSessions = [];
+      if (!raceSessions || !raceSessions.length) return null;
+
+      // Merge Race + Sprint sessions, tag each, sort chronologically
+      var allScored = raceSessions.map(function (s) { return Object.assign({}, s, { _isSprint: false }); })
+        .concat(sprintSessions.map(function (s) { return Object.assign({}, s, { _isSprint: true }); }));
+      allScored.sort(function (a, b) { return a.date_start < b.date_start ? -1 : a.date_start > b.date_start ? 1 : 0; });
 
       var nowISO = new Date().toISOString();
-      var completed = sessions.filter(function (s) { return s.date_start <= nowISO; });
+      var completed = allScored.filter(function (s) { return s.date_start <= nowISO; });
 
-      for (var r = 0; r < completed.length; r++) {
-        if (completed[r].session_key === currentSK) { round = r + 1; break; }
+      // Determine round by matching current session's meeting against race calendar
+      var sortedRaces = raceSessions.slice().sort(function (a, b) { return a.date_start < b.date_start ? -1 : a.date_start > b.date_start ? 1 : 0; });
+      var currentMeeting = null;
+      for (var c = 0; c < completed.length; c++) {
+        if (completed[c].session_key === currentSK) { currentMeeting = completed[c].meeting_key; break; }
+      }
+      if (currentMeeting) {
+        for (var r = 0; r < sortedRaces.length; r++) {
+          if (sortedRaces[r].meeting_key === currentMeeting) { round = r + 1; break; }
+        }
       }
 
       for (var i = 0; i < completed.length; i++) {
         var sk = completed[i].session_key;
         var isCurrent = (sk === currentSK);
+        var isSprint = completed[i]._isSprint;
+        var POINTS = isSprint ? SPRINT_POINTS : RACE_POINTS;
 
         try {
           var positions, driverMap, allLaps;
@@ -433,7 +477,7 @@
             driverMap = currentData.driverMap;
             allLaps = currentData.allLaps;
           } else {
-            /* Past race — cache positions+drivers per session key (immutable) */
+            /* Past session — cache positions+drivers per session key (immutable) */
             var _raceKey = "f1_past_race_" + sk;
             var _raceData = window.ApiCache && ApiCache.get(_raceKey);
 
@@ -441,7 +485,7 @@
               positions = _raceData.positions;
               driverMap = _raceData.driverMap;
             } else {
-              // Fetch positions + drivers in parallel per past race
+              // Fetch positions + drivers in parallel per past session
               var _raceResults = await Promise.all([
                 this.fetchWithRetry("https://api.openf1.org/v1/position?session_key=" + sk),
                 this.fetchWithRetry("https://api.openf1.org/v1/drivers?session_key=" + sk),
@@ -465,10 +509,10 @@
               }
             }
 
-            allLaps = null; // skip laps fetch for past races
+            allLaps = null; // skip laps fetch for past sessions
           }
 
-          /* Apply race points */
+          /* Apply points (race or sprint scale) */
           positions.forEach(function (p) {
             var d = driverMap[p.driver_number];
             if (!d) return;
@@ -486,8 +530,8 @@
             driverTotals[p.driver_number].pts += pts;
           });
 
-          /* Fastest-lap bonus — current race only */
-          if (allLaps && allLaps.length > 0) {
+          /* Fastest-lap bonus — non-sprint current session only */
+          if (!isSprint && allLaps && allLaps.length > 0) {
             var fastest = null;
             allLaps.forEach(function (l) {
               if (l.lap_duration != null && l.lap_number > 1) {
@@ -541,7 +585,7 @@
     el.innerHTML = "";
 
     var TOKENS = this.getTokens();
-    var dims = this.dims(el, { ml: 120, mr: 80 });
+    var dims = this.dims(el, { ml: 70, mr: 80 });
     var w = dims.w, h = dims.h, mt = dims.mt, mr = dims.mr, mb = dims.mb, ml = dims.ml, iw = dims.iw, ih = dims.ih;
 
     var svg = d3.select(el).append("svg").attr("width", w).attr("height", h);
@@ -594,7 +638,7 @@
       .attr("font-size", "11px")
       .text(function (d) {
         if (d.pos === 1) return "WINNER";
-        if (d.lapped) return "+1 LAP";
+        if (d.lapped) return "+1 LAPS";
         return "+" + d.gap.toFixed(1) + "s";
       });
 
@@ -723,94 +767,18 @@
     el.innerHTML = html;
   };
 
-  /* Average Pit Lane Time Chart */
-  F1Base.renderPitTimesChart = function (elId, teamPitData) {
-    var el = document.getElementById(elId);
-    if (!el || !teamPitData || teamPitData.length === 0) return;
-    el.innerHTML = "";
-
-    var TOKENS = this.getTokens();
-    var dims = this.dims(el, { ml: 120, mr: 80, mt: 12, mb: 30 });
-    var w = dims.w, h = dims.h, mt = dims.mt, mr = dims.mr, mb = dims.mb, ml = dims.ml, iw = dims.iw, ih = dims.ih;
-
-    var svg = d3.select(el).append("svg").attr("width", w).attr("height", h);
-    var g = svg.append("g").attr("transform", "translate(" + ml + "," + mt + ")");
-
-    var self = this;
-
-    var minVal = d3.min(teamPitData, function (d) { return d.avg; });
-    var maxVal = d3.max(teamPitData, function (d) { return d.avg; });
-    var pad = Math.max((maxVal - minVal) * 0.4, 0.5);
-    var xMin = Math.max(0, minVal - pad);
-    var xMax = maxVal + pad * 1.5;
-
-    var x = d3.scaleLinear().domain([xMin, xMax]).range([0, iw]);
-    var y = d3.scaleBand()
-      .domain(teamPitData.map(function (d) { return d.team; }))
-      .range([0, ih])
-      .padding(0.3);
-
-    g.append("g").attr("class", "grid")
-      .call(d3.axisBottom(x).tickSize(ih).tickFormat("").ticks(5))
-      .attr("stroke-opacity", 0.1);
-
-    g.append("g").attr("transform", "translate(0," + ih + ")")
-      .call(d3.axisBottom(x).ticks(5).tickFormat(function (d) { return d.toFixed(1) + "s"; }));
-
-    g.append("g").call(d3.axisLeft(y).tickSize(0).tickPadding(8));
-
-    // Bars (animate from xMin baseline)
-    g.selectAll(".bar").data(teamPitData).join("rect")
-      .attr("class", "bar")
-      .attr("x", 0)
-      .attr("y", function (d) { return y(d.team); })
-      .attr("height", y.bandwidth())
-      .attr("rx", 3)
-      .attr("fill", function (d) { return d.color; })
-      .attr("opacity", 0.85)
-      .attr("width", 0)
-      .transition().duration(700).delay(function (_, i) { return i * 60; })
-      .attr("width", function (d) { return Math.max(2, x(d.avg)); });
-
-    // Value labels
-    g.selectAll(".pit-label").data(teamPitData).join("text")
-      .attr("class", "pit-label")
-      .attr("x", function (d) { return x(d.avg) + 6; })
-      .attr("y", function (d) { return y(d.team) + y.bandwidth() / 2; })
-      .attr("dy", "0.35em")
-      .attr("fill", TOKENS.text2)
-      .attr("font-size", "11px")
-      .text(function (d) {
-        return d.avg.toFixed(2) + "s";
-      });
-
-    // Transparent hit targets for tooltips
-    g.selectAll(".bar-hit").data(teamPitData).join("rect")
-      .attr("class", "bar-hit")
-      .attr("x", 0)
-      .attr("y", function (d) { return y(d.team); })
-      .attr("width", iw)
-      .attr("height", y.bandwidth())
-      .attr("fill", "transparent")
-      .on("mousemove", function (event, d) {
-        var content =
-          '<div style="font-weight:700;margin-bottom:4px;font-size:10px;color:var(--color-muted)">' + d.team.toUpperCase() + '</div>' +
-          '<div style="margin-top:4px;line-height:1.6;color:var(--color-text)">' +
-          'Avg pitlane: <strong>' + d.avg.toFixed(3) + 's</strong><br>' +
-          'Pit stops: <strong>' + d.count + '</strong></div>';
-        self.showTooltip(content, event);
-      })
-      .on("mouseout", function () { self.hideTooltip(); });
-  };
-
   /* Race Pace Chart */
   F1Base.renderRacePaceChart = function (elId, paceData) {
     var el = document.getElementById(elId);
-    if (!el || paceData.length === 0) return;
+    if (!el) return;
+    if (!paceData || paceData.length === 0) {
+      el.innerHTML = '<div class="chart-message">Lap timing data not available from the API for this session.</div>';
+      return;
+    }
     el.innerHTML = "";
 
     var TOKENS = this.getTokens();
-    var dims = this.dims(el, { ml: 120, mr: 80, mt: 12, mb: 20 });
+    var dims = this.dims(el, { ml: 70, mr: 100, mt: 12, mb: 20 });
     var w = dims.w, h = dims.h, mt = dims.mt, mr = dims.mr, mb = dims.mb, ml = dims.ml, iw = dims.iw, ih = dims.ih;
 
     var svg = d3.select(el).append("svg").attr("width", w).attr("height", h);
@@ -920,7 +888,7 @@
     el.innerHTML = "";
 
     var TOKENS = this.getTokens();
-    var dims = this.dims(el, { ml: 120, mr: 80, mt: 12, mb: 20 });
+    var dims = this.dims(el, { ml: 100, mr: 60, mt: 12, mb: 20 });
     var w = dims.w, h = dims.h, mt = dims.mt, mr = dims.mr, mb = dims.mb, ml = dims.ml, iw = dims.iw, ih = dims.ih;
 
     var svg = d3.select(el).append("svg").attr("width", w).attr("height", h);
@@ -966,20 +934,95 @@
     this.renderDriversChart(elId, data, "team");
   };
 
-  /* UI Helpers */
-  F1Base.initSkeleton = function (ids, msg) {
-    if (window.ChartUtils) {
-      ChartUtils.initSkeleton(Array.isArray(ids) ? ids : [ids], msg || "Loading race data\u2026");
-    } else {
-      // Fallback if ChartUtils isn't loaded
-      const idList = Array.isArray(ids) ? ids : [ids];
-      idList.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = '<div class="chart-skeleton">' + (msg || "Loading race data\u2026") + '</div>';
+  /* Average Pit Lane Time Chart */
+
+  F1Base.renderPitTimesChart = function (elId, teamPitData) {
+    var el = document.getElementById(elId);
+    if (!el || !teamPitData || teamPitData.length === 0) return;
+    el.innerHTML = "";
+
+    var TOKENS = this.getTokens();
+    var dims = this.dims(el, { ml: 130, mr: 130, mt: 12, mb: 30 });
+    var w = dims.w, h = dims.h, mt = dims.mt, mr = dims.mr, mb = dims.mb, ml = dims.ml, iw = dims.iw, ih = dims.ih;
+
+    var svg = d3.select(el).append("svg").attr("width", w).attr("height", h);
+    var g = svg.append("g").attr("transform", "translate(" + ml + "," + mt + ")");
+
+    var self = this;
+
+    var minVal = d3.min(teamPitData, function (d) { return d.avg; });
+    var maxVal = d3.max(teamPitData, function (d) { return d.avg; });
+    var pad = Math.max((maxVal - minVal) * 0.4, 0.5);
+    var xMin = Math.max(0, minVal - pad);
+    var xMax = maxVal + pad * 1.5;
+
+    var x = d3.scaleLinear().domain([xMin, xMax]).range([0, iw]);
+    var y = d3.scaleBand()
+      .domain(teamPitData.map(function (d) { return d.team; }))
+      .range([0, ih])
+      .padding(0.3);
+
+    g.append("g").attr("class", "grid")
+      .call(d3.axisBottom(x).tickSize(ih).tickFormat("").ticks(5))
+      .attr("stroke-opacity", 0.1);
+
+    g.append("g").attr("transform", "translate(0," + ih + ")")
+      .call(d3.axisBottom(x).ticks(5).tickFormat(function (d) { return d.toFixed(1) + "s"; }));
+
+    g.append("g").call(d3.axisLeft(y).tickSize(0).tickPadding(8));
+
+    // Bars (animate from xMin baseline)
+    g.selectAll(".bar").data(teamPitData).join("rect")
+      .attr("class", "bar")
+      .attr("x", 0)
+      .attr("y", function (d) { return y(d.team); })
+      .attr("height", y.bandwidth())
+      .attr("rx", 3)
+      .attr("fill", function (d) { return d.color; })
+      .attr("opacity", 0.85)
+      .attr("width", 0)
+      .transition().duration(700).delay(function (_, i) { return i * 60; })
+      .attr("width", function (d) { return Math.max(2, x(d.avg)); });
+
+    // Value labels
+    g.selectAll(".pit-label").data(teamPitData).join("text")
+      .attr("class", "pit-label")
+      .attr("x", function (d) { return x(d.avg) + 6; })
+      .attr("y", function (d) { return y(d.team) + y.bandwidth() / 2; })
+      .attr("dy", "0.35em")
+      .attr("fill", TOKENS.text2)
+      .attr("font-size", "11px")
+      .text(function (d) {
+        return d.avg.toFixed(2) + "s";
       });
-    }
+
+    // Transparent hit targets for tooltips
+    g.selectAll(".bar-hit").data(teamPitData).join("rect")
+      .attr("class", "bar-hit")
+      .attr("x", 0)
+      .attr("y", function (d) { return y(d.team); })
+      .attr("width", iw)
+      .attr("height", y.bandwidth())
+      .attr("fill", "transparent")
+      .on("mousemove", function (event, d) {
+        var content =
+          '<div style="font-weight:700;margin-bottom:4px;font-size:10px;color:var(--color-muted)">' + d.team.toUpperCase() + '</div>' +
+          '<div style="margin-top:4px;line-height:1.6;color:var(--color-text)">' +
+          'Avg pitlane: <strong>' + d.avg.toFixed(3) + 's</strong><br>' +
+          'Pit stops: <strong>' + d.count + '</strong></div>';
+        if (d.drivers && d.drivers.length > 0) {
+          content += '<div style="margin-top:6px;border-top:1px solid var(--color-border);padding-top:6px;line-height:1.5;color:var(--color-text)">';
+          d.drivers.forEach(function (dr) {
+            content += '<div>' + dr.acronym + ' · Lap ' + dr.lap + ' · <strong>' + dr.duration.toFixed(1) + 's</strong></div>';
+          });
+          content += '</div>';
+        }
+        self.showTooltip(content, event);
+      })
+      .on("mouseout", function () { self.hideTooltip(); });
   };
 
+  /* UI Helpers */
   F1Base.colorizeDriverCards = function (containerId) {
     var el = document.getElementById(containerId);
     if (!el) return;
@@ -1074,6 +1117,7 @@
     var dateStr = d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
     var parts = [];
     if (round) parts.push("Round " + round);
+    if (s.session_name && s.session_name !== "Race") parts.push(s.session_name);
     if (s.circuit_short_name) parts.push(s.circuit_short_name);
     if (s.location) parts.push(s.location);
     parts.push(dateStr);
@@ -1081,7 +1125,7 @@
   };
 
   /* Next Race — fetch from sessions API */
-  F1Base.populateNextRace = async function (year, currentSessionKey) {
+  F1Base.populateNextRace = async function (year, currentSessionKey, currentSessionDate) {
     var titleEl = document.getElementById("next-race-title");
     var metaEl = document.getElementById("next-race-meta");
     if (!titleEl && !metaEl) return;
@@ -1091,9 +1135,21 @@
       );
       sessions.sort(function (a, b) { return new Date(a.date_start) - new Date(b.date_start); });
       var idx = sessions.findIndex(function (s) { return s.session_key === currentSessionKey; });
+      var next, round;
       if (idx !== -1 && idx + 1 < sessions.length) {
-        var next = sessions[idx + 1];
-        var round = idx + 2;
+        next = sessions[idx + 1];
+        round = idx + 2;
+      } else if (idx === -1 && currentSessionDate) {
+        // Current session is not a Race (e.g. Sprint) — find next Race after it
+        for (var j = 0; j < sessions.length; j++) {
+          if (sessions[j].date_start > currentSessionDate) {
+            next = sessions[j];
+            round = j + 1;
+            break;
+          }
+        }
+      }
+      if (next) {
         var d = new Date(next.date_start);
         var dateStr = d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
         if (titleEl) titleEl.textContent = "Round " + round + " \u2014 " + next.country_name + " Grand Prix";
@@ -1119,10 +1175,13 @@
     }, config.chartIds || {});
 
     // Loading skeleton
-    this.initSkeleton(Object.values(ids));
+    Object.values(ids).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.innerHTML = '<div class="chart-skeleton">Loading race data...</div>';
+    });
 
-    // 1. Fetch OpenF1 race data
-    var data = await this.fetchAllRaceData(config.year, config.country);
+    // 1. Fetch OpenF1 race data (session_name defaults to "Race"; pass "Sprint" for sprints)
+    var data = await this.fetchAllRaceData(config.year, config.country, config.sessionName);
     var totalLaps = config.totalLaps || data.totalLaps || 58;
 
     // 2. Gap to leader (top 10)
@@ -1153,7 +1212,7 @@
 
     // Hero stats + next race (next race is non-blocking)
     this.populateHeroStats(data);
-    this.populateNextRace(config.year, data.sessionKey);
+    this.populateNextRace(config.year, data.sessionKey, data.session && data.session.date_start);
 
     // Stash metadata for resize / race-specific access
     data._totalLaps = totalLaps;
