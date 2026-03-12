@@ -18,6 +18,50 @@ svg text {
   fill: var(--color-muted);
 }
 
+/* Chart container — position: relative so the skeleton overlay works */
+.chart {
+  position: relative;
+  min-height: 220px;
+}
+
+/* Shimmer skeleton — fills the chart container while data loads */
+@keyframes f1-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.chart-skeleton {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-border)  50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: f1-shimmer 1.6s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* Inline message for no-data states (e.g. pace chart when API has no laps) */
+.chart-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  font-size: 12px;
+  color: var(--color-muted);
+  font-style: italic;
+  padding: 16px 0;
+}
+
 /* Hero Stats */
 .hero-stats {
   display: flex;
@@ -163,6 +207,8 @@ svg text {
 
 /* Strategy Gantt */
 #chart-stint {
+  position: relative;
+  min-height: 340px;
   overflow: hidden;
   margin: 24px 0;
 }
