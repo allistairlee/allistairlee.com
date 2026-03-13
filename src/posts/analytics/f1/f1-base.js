@@ -323,6 +323,36 @@
         })
         .sort(function (a, b) { return a.avg - b.avg; });
 
+      // Build per-driver pit data (for driver pit view)
+      var _driverPitMap = {};
+      result.pitStops.forEach(function (p) {
+        if (p.pit_duration == null || p.pit_duration <= 0) return;
+        var d = result.driverMap[p.driver_number];
+        if (!d) return;
+        var key = p.driver_number;
+        if (!_driverPitMap[key]) {
+          _driverPitMap[key] = {
+            driver: d.name_acronym || d.last_name,
+            team: d.team_name,
+            total: 0,
+            count: 0,
+            stops: [],
+            color: _selfPit.getTeamColor(d.team_name),
+          };
+        }
+        _driverPitMap[key].total += p.pit_duration;
+        _driverPitMap[key].count += 1;
+        _driverPitMap[key].stops.push({ lap: p.lap_number, duration: p.pit_duration });
+      });
+      result.driverPitData = Object.values(_driverPitMap)
+        .filter(function (d) { return d.count > 0; })
+        .map(function (d) {
+          d.stops.sort(function (a, b) { return a.lap - b.lap; });
+          d.avg = d.total / d.count;
+          return d;
+        })
+        .sort(function (a, b) { return a.avg - b.avg; });
+
     } catch (err) {
       // Silently ignore fetch errors
     }
@@ -934,7 +964,7 @@
     this.renderDriversChart(elId, data, "team");
   };
 
-  /* Average Pit Lane Time Chart */
+  /* Average Pit Lane Time Chart — Team view */
 
   F1Base.renderPitTimesChart = function (elId, teamPitData) {
     var el = document.getElementById(elId);
@@ -1022,7 +1052,92 @@
       .on("mouseout", function () { self.hideTooltip(); });
   };
 
-  /* UI Helpers */
+  /* Pit Lane Time Chart — Driver view (one bar per driver, sorted ASC) */
+
+  F1Base.renderPitTimesDriverChart = function (elId, driverPitData) {
+    var el = document.getElementById(elId);
+    if (!el || !driverPitData || driverPitData.length === 0) return;
+    el.innerHTML = "";
+
+    var TOKENS = this.getTokens();
+    var dims = this.dims(el, { ml: 70, mr: 130, mt: 12, mb: 30 });
+    var w = dims.w, h = dims.h, mt = dims.mt, mr = dims.mr, mb = dims.mb, ml = dims.ml, iw = dims.iw, ih = dims.ih;
+
+    var svg = d3.select(el).append("svg").attr("width", w).attr("height", h);
+    var g = svg.append("g").attr("transform", "translate(" + ml + "," + mt + ")");
+
+    var self = this;
+
+    var minVal = d3.min(driverPitData, function (d) { return d.avg; });
+    var maxVal = d3.max(driverPitData, function (d) { return d.avg; });
+    var pad = Math.max((maxVal - minVal) * 0.4, 0.5);
+    var xMin = Math.max(0, minVal - pad);
+    var xMax = maxVal + pad * 1.5;
+
+    var x = d3.scaleLinear().domain([xMin, xMax]).range([0, iw]);
+    var y = d3.scaleBand()
+      .domain(driverPitData.map(function (d) { return d.driver; }))
+      .range([0, ih])
+      .padding(0.3);
+
+    g.append("g").attr("class", "grid")
+      .call(d3.axisBottom(x).tickSize(ih).tickFormat("").ticks(5))
+      .attr("stroke-opacity", 0.1);
+
+    g.append("g").attr("transform", "translate(0," + ih + ")")
+      .call(d3.axisBottom(x).ticks(5).tickFormat(function (d) { return d.toFixed(1) + "s"; }));
+
+    g.append("g").call(d3.axisLeft(y).tickSize(0).tickPadding(8));
+
+    // Bars
+    g.selectAll(".bar").data(driverPitData).join("rect")
+      .attr("class", "bar")
+      .attr("x", 0)
+      .attr("y", function (d) { return y(d.driver); })
+      .attr("height", y.bandwidth())
+      .attr("rx", 3)
+      .attr("fill", function (d) { return d.color; })
+      .attr("opacity", 0.85)
+      .attr("width", 0)
+      .transition().duration(700).delay(function (_, i) { return i * 60; })
+      .attr("width", function (d) { return Math.max(2, x(d.avg) - x(xMin)); });
+
+    // Value labels
+    g.selectAll(".pit-label").data(driverPitData).join("text")
+      .attr("class", "pit-label")
+      .attr("x", function (d) { return x(d.avg) + 6; })
+      .attr("y", function (d) { return y(d.driver) + y.bandwidth() / 2; })
+      .attr("dy", "0.35em")
+      .attr("fill", TOKENS.text2)
+      .attr("font-size", "11px")
+      .text(function (d) { return d.avg.toFixed(2) + "s"; });
+
+    // Transparent hit targets for tooltips
+    g.selectAll(".bar-hit").data(driverPitData).join("rect")
+      .attr("class", "bar-hit")
+      .attr("x", 0)
+      .attr("y", function (d) { return y(d.driver); })
+      .attr("width", iw)
+      .attr("height", y.bandwidth())
+      .attr("fill", "transparent")
+      .on("mousemove", function (event, d) {
+        var content =
+          '<div style="font-weight:700;margin-bottom:2px;font-size:10px;color:var(--color-muted)">' + (d.team || "").toUpperCase() + '</div>' +
+          '<div style="font-weight:700;color:' + d.color + '">' + d.driver + '</div>';
+        if (d.stops && d.stops.length > 0) {
+          content += '<div style="margin-top:6px;line-height:1.6;color:var(--color-text)">';
+          d.stops.forEach(function (s) {
+            content += '<div>Lap ' + s.lap + ' \u00b7 <strong>' + s.duration.toFixed(3) + 's</strong></div>';
+          });
+          content += '</div>';
+        }
+        if (d.count > 1) {
+          content += '<div style="margin-top:4px;color:var(--color-muted);font-size:10px">Avg: ' + d.avg.toFixed(3) + 's (' + d.count + ' stops)</div>';
+        }
+        self.showTooltip(content, event);
+      })
+      .on("mouseout", function () { self.hideTooltip(); });
+  };
   F1Base.colorizeDriverCards = function (containerId) {
     var el = document.getElementById(containerId);
     if (!el) return;
@@ -1194,8 +1309,12 @@
     // 4. Race pace box plot
     this.renderRacePaceChart(ids.pace, data.paceData);
 
-    // 4b. Average pit lane time by team
-    this.renderPitTimesChart(ids.pitTimes, data.teamPitData);
+    // 4b. Pit lane time — team or driver view
+    if (config.pitView === "driver") {
+      this.renderPitTimesDriverChart(ids.pitTimes, data.driverPitData);
+    } else {
+      this.renderPitTimesChart(ids.pitTimes, data.teamPitData);
+    }
 
     // 5. Championship standings (auto-calculated from API)
     if (data.sessionKey) {
@@ -1232,7 +1351,11 @@
     this.renderStintChart(ids.stint, data.stintData, data.raceControl,
       data.driverMap, data.positions, totalLaps);
     this.renderRacePaceChart(ids.pace, data.paceData);
-    this.renderPitTimesChart(ids.pitTimes, data.teamPitData);
+    if (data._config && data._config.pitView === "driver") {
+      this.renderPitTimesDriverChart(ids.pitTimes, data.driverPitData);
+    } else {
+      this.renderPitTimesChart(ids.pitTimes, data.teamPitData);
+    }
 
     // Re-render championship from cached standings
     if (data._driverStandings) {
