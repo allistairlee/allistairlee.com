@@ -4,7 +4,7 @@ css:
   - /posts/analytics/f1/f1-base.css
 js:
   - /posts/analytics/f1/f1-base.js
-  - /posts/analytics/f1/2026-china/2026-china-sprint.js
+  - /posts/analytics/f1/2026/china/sprint.js
 d3: true
 ---
 

@@ -1,8 +1,4 @@
-/* F1 2026 China Sprint — Race-Specific JS
-   
-  Base charts (gap, stint, pace, championships) are handled
-  by F1Base.initBaseCharts(). Sprint has no additional charts.
-*/
+/* F1 2026 China Sprint — Race-Specific JS */
 (function () {
   "use strict";
 
