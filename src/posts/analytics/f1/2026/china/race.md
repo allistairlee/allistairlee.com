@@ -4,7 +4,7 @@ css:
   - /posts/analytics/f1/f1-base.css
 js:
   - /posts/analytics/f1/f1-base.js
-  - /posts/analytics/f1/2026-china/2026-china.js
+  - /posts/analytics/f1/2026/china/race.js
 d3: true
 ---
 
@@ -29,7 +29,7 @@ A 19-year-old on the top step. A massive 1-2 for Mercedes. And a Ferrari debut p
 
 But the headline of Shanghai wasn't just the Silver Arrows running away with it. It was Antonelli converting a historic maiden pole into his first-ever Grand Prix victory, handling the pressure like a 10-year veteran. Meanwhile, Red Bull's struggles deepened, and McLaren's weekend ended before it even started.
 
-Let's get into the details of the weekend after the exciting [Sprint race on Saturday](/posts/f1/2026-china-sprint).
+Let's get into the details of the weekend after the exciting [Sprint race on Saturday](/posts/f1-2026-china-sprint/).
 
 ###### Section 01 — Final Standings
 ---
