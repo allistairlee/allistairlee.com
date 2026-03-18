@@ -97,6 +97,7 @@
     var data = await F1Base.initBaseCharts({
       year: 2026,
       country: "Australia",
+      sessionName: "Race",
       chartIds: { telemetry: "chart-telemetry" }
     });
 
