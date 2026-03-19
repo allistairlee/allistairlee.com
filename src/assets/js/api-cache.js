@@ -70,7 +70,6 @@
         localStorage.setItem(PREFIX + key, JSON.stringify(entry));
       } catch (e) {
         // Quota exceeded or serialisation error — fail silently
-        console.warn("[ApiCache] Could not write key '" + key + "':", e.message || e);
       }
     },
 
@@ -118,7 +117,6 @@
       if (k && k.indexOf(PREFIX) === 0) toRemove.push(k);
     }
     toRemove.forEach(function (k) { localStorage.removeItem(k); });
-    console.info("[ApiCache] Cache flushed (" + toRemove.length + " entries). Reloading\u2026");
     var cleanUrl = window.location.href
       .replace(/[?&]flush(?:=[^&]*)?/, "")
       .replace(/^([^?#]*)[?&]$/, "$1");
