@@ -110,15 +110,13 @@ Ferrari's pit crew actually delivered — they beat Mercedes by a second and a h
   <div class="chart-caption">Box spans the middle 50% of clean laps. Vertical line is median, dot is mean. Whiskers are min/max after outlier removal. Hover for full stats.</div>
 </div>
 
-For this, I strip out lap 1, VSC laps, pit-out laps, and statistical outliers — isolating each driver's true pace in clean, representative conditions. 
+For this, I strip out lap 1, VSC laps, pit-out laps, and statistical outliers — isolating each driver's true pace in clean, representative conditions. Box width is basically a proxy for consistency. Tight box means the driver was laying down controlled, similar laps all race. Wide box means disruption — traffic, tyre issues, incident recovery. And consistency compounds. A consistent tenth per lap is five seconds by the chequered flag.
 
 Here I'm comparing each driver's pace rank against their actual finishing position. If someone is faster here than where they finished, something cost them — strategy, traffic, incidents. That gap between pace and result is the weekend's real story hiding in the numbers.
 
-Verstappen is the obvious one. Red Bull's average and median sit at the fast end — but the box is the widest in the group. That's not a car problem. That's fourteen overtakes. Every time he was stuck behind a slower car, he was in dirty air, braking early, running compromised lines. The raw speed was clearly there. Starting from the back just turned it into variance.
+Verstappen is the obvious one. The Red Bull's average and median sat at the fast end — but the box is the widest in the group. That's not a car problem. That's fourteen overtakes. Every time he was stuck behind a slower car, he was in dirty air, braking early, running compromised lines. The raw speed was clearly there albeit not as dominant as the Mercedes or Ferrari. Starting from the back just turned it into variance.
 
 Mercedes and Ferrari sit close enough on this chart that the strategy difference becomes genuinely painful to look at. Ferrari had the car. They had the pace. The result gap is a strategy story, not a performance one.
-
-One more thing worth noting here: box width is basically a proxy for consistency. Tight box means the driver was laying down controlled, similar laps all race. Wide box means disruption — traffic, tyre issues, incident recovery. And consistency compounds. A consistent tenth per lap is five seconds by the chequered flag.
 
 ###### Section 05 — Driver Spotlight
 ---
@@ -132,7 +130,7 @@ One more thing worth noting here: box width is basically a proxy for consistency
     <span class="driver-card__result">P6</span>
   </div>
   <div class="driver-card__delta">Grid: P20 → Finish: P6 <strong>+14 places</strong></div>
-  <p class="driver-card__note">P20 after a qualifying crash. Gained 14 places, fastest lap on older rubber, nine points from a weekend that could easily have been a zero. The pace chart puts the Red Bull right at the sharp end. If he starts from the front in Shanghai, I think we're going to see something very different very quickly.</p>
+  <p class="driver-card__note">P20 after a qualifying crash. Gained 14 places, fastest lap on older rubber, nine points from a weekend that could easily have been a zero. The pace chart puts the Red Bull right at the fast end. If he starts from the front in Shanghai, I think we're going to see something very different very quickly.</p>
 </div>
 
 <div class="driver-card">
@@ -195,4 +193,3 @@ Box, box — see you next race. 🏎️
   <div class="next-race__title" id="next-race-title">—</div>
   <div class="next-race__meta" id="next-race-meta">—</div>
 </div>
-
