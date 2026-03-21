@@ -288,8 +288,7 @@
           if (cleaned.length >= 4) return self._boxStats(d, cleaned);
         }
         return self._boxStats(d, driverLaps);
-      }).filter(function (d) { return d.avg > 0; })
-        .sort(function (a, b) { return a.avg - b.avg; });
+      }).filter(function (d) { return d.avg > 0; });
 
       // Build team average pit lane times + per-driver stop details
       var _teamPitMap = {};
