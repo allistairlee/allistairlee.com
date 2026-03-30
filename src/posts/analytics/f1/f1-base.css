@@ -1,4 +1,4 @@
-/* F1 Base Styles — Used across ALL F1 Race Posts */
+/* F1 Base Styles - Used across ALL F1 Race Posts */
 
 /* Global Chart Typography */
 #chart-stint,
@@ -18,28 +18,31 @@ svg text {
   fill: var(--color-muted);
 }
 
-/* Chart container — position: relative so the skeleton overlay works */
+/* Chart container - position: relative so the skeleton overlay works */
 .chart {
   position: relative;
   min-height: 220px;
 }
 
-/* Shimmer skeleton — fills the chart container while data loads */
+/* Shimmer skeleton - fills the chart container while data loads */
 @keyframes f1-shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .chart-skeleton {
   position: absolute;
   inset: 0;
   border-radius: 6px;
-  background: linear-gradient(
-    90deg,
-    var(--color-surface) 25%,
-    var(--color-border)  50%,
-    var(--color-surface) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--color-surface) 25%,
+      var(--color-border) 50%,
+      var(--color-surface) 75%);
   background-size: 200% 100%;
   animation: f1-shimmer 1.6s ease-in-out infinite;
   display: flex;

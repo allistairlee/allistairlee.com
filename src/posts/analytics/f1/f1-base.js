@@ -1,7 +1,7 @@
-/* F1 Base — Reusable Charts & Data Layer for F1 Race Posts
+/* F1 Base - Reusable Charts & Data Layer for F1 Race Posts
 
   Base provides 5 standard charts for every race post:
-    1. Final Classification — Gap to Leader (Top 10)
+    1. Final Classification - Gap to Leader (Top 10)
     2. Stint Strategy (Top 10) with VSC/SC overlays
     3. Race Pace (Box Plot)
     4. Drivers' Championship (auto-calculated from API)
@@ -175,7 +175,7 @@
         }
       });
 
-      // Build gap data — top 10
+      // Build gap data - top 10
       result.positions.forEach(function (p) {
         if (p.position > 10) return;
         var d = result.driverMap[p.driver_number];
@@ -357,7 +357,7 @@
     }
 
     if (window.ApiCache && result.sessionKey) {
-      ApiCache.set(_cacheKey, result, 7 * 24 * 60 * 60 * 1000); // 7 days — race data is immutable
+      ApiCache.set(_cacheKey, result, 7 * 24 * 60 * 60 * 1000); // 7 days - race data is immutable
     }
     return result;
   };
@@ -445,7 +445,7 @@
     var round = 1;
 
     try {
-      // Cache the sessions lists — stable between loads, but new races get added through the year
+      // Cache the sessions lists - stable between loads, but new races get added through the year
       var _sessionsKey = "f1_sessions_" + year;
       var raceSessions = window.ApiCache && ApiCache.get(_sessionsKey);
       if (!raceSessions) {
@@ -506,7 +506,7 @@
             driverMap = currentData.driverMap;
             allLaps = currentData.allLaps;
           } else {
-            /* Past session — cache positions+drivers per session key (immutable) */
+            /* Past session - cache positions+drivers per session key (immutable) */
             var _raceKey = "f1_past_race_" + sk;
             var _raceData = window.ApiCache && ApiCache.get(_raceKey);
 
@@ -559,7 +559,7 @@
             driverTotals[p.driver_number].pts += pts;
           });
 
-          /* Fastest-lap bonus — non-sprint current session only */
+          /* Fastest-lap bonus - non-sprint current session only */
           if (!isSprint && allLaps && allLaps.length > 0) {
             var fastest = null;
             allLaps.forEach(function (l) {
@@ -963,7 +963,7 @@
     this.renderDriversChart(elId, data, "team");
   };
 
-  /* Average Pit Lane Time Chart — Team view */
+  /* Average Pit Lane Time Chart - Team view */
 
   F1Base.renderPitTimesChart = function (elId, teamPitData) {
     var el = document.getElementById(elId);
@@ -1051,7 +1051,7 @@
       .on("mouseout", function () { self.hideTooltip(); });
   };
 
-  /* Pit Lane Time Chart — Driver view (one bar per driver, sorted ASC) */
+  /* Pit Lane Time Chart - Driver view (one bar per driver, sorted ASC) */
 
   F1Base.renderPitTimesDriverChart = function (elId, driverPitData) {
     var el = document.getElementById(elId);
@@ -1157,7 +1157,7 @@
     });
   };
 
-  // Cached tooltip reference — avoids repeated getElementById on every mouse event
+  // Cached tooltip reference - avoids repeated getElementById on every mouse event
   var _tooltipEl = null;
 
   F1Base.setupTooltip = function () {
@@ -1238,7 +1238,7 @@
     el.textContent = parts.join(" \u00B7 ");
   };
 
-  /* Next Race — fetch from sessions API */
+  /* Next Race - fetch from sessions API */
   F1Base.populateNextRace = async function (year, currentSessionKey, currentSessionDate) {
     var titleEl = document.getElementById("next-race-title");
     var metaEl = document.getElementById("next-race-meta");
@@ -1254,7 +1254,7 @@
         next = sessions[idx + 1];
         round = idx + 2;
       } else if (idx === -1 && currentSessionDate) {
-        // Current session is not a Race (e.g. Sprint) — find next Race after it
+        // Current session is not a Race (e.g. Sprint) - find next Race after it
         for (var j = 0; j < sessions.length; j++) {
           if (sessions[j].date_start > currentSessionDate) {
             next = sessions[j];
@@ -1308,7 +1308,7 @@
     // 4. Race pace box plot
     this.renderRacePaceChart(ids.pace, data.paceData);
 
-    // 4b. Pit lane time — team or driver view
+    // 4b. Pit lane time - team or driver view
     if (config.pitView === "driver") {
       this.renderPitTimesDriverChart(ids.pitTimes, data.driverPitData);
     } else {
@@ -1340,7 +1340,7 @@
     return data;
   };
 
-  /* Resize handler — re-renders all base charts */
+  /* Resize handler - re-renders all base charts */
   F1Base.handleResize = function (data) {
     if (!data || !data._ids) return;
     var ids = data._ids;

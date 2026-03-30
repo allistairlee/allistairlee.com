@@ -1,4 +1,4 @@
-/* F1 2026 China Race — Race-Specific JS */
+/* F1 2026 China Race - Race-Specific JS */
 (function () {
   "use strict";
 
@@ -8,7 +8,7 @@
 
   /* Init */
   F1Base.waitForD3(async function () {
-    // 1. Init all base charts — sessionName:"Sprint" pulls sprint data
+    // 1. Init all base charts - sessionName:"Sprint" pulls sprint data
     var data = await F1Base.initBaseCharts({
       year: 2026,
       country: "China",

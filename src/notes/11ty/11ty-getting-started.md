@@ -8,7 +8,7 @@ Writing this down so I have a starting point for my next project.
 
 ## The structure I've settled on
 
-While there's no "right" way to do it, I've found that a well-organized folder structure makes everything easier to manage as the site grows. This is what I'm using for this site — it keeps the source files separate from the configuration and build outputs.
+While there's no "right" way to do it, I've found that a well-organized folder structure makes everything easier to manage as the site grows. This is what I'm using for this site - it keeps the source files separate from the configuration and build outputs.
 
 ```
 my-eleventy-site/

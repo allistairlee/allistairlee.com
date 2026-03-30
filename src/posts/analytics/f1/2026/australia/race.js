@@ -1,4 +1,4 @@
-/* F1 2026 Australia Race — Race-Specific JS */
+/* F1 2026 Australia Race - Race-Specific JS */
 (function () {
   "use strict";
 

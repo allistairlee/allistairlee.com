@@ -1,4 +1,4 @@
-/* API Cache — localStorage-backed cache with TTL
+/* API Cache - localStorage-backed cache with TTL
    
    A lightweight cache shared across all posts that hit
    external APIs (OpenF1, HIBP, etc.). Persists across
@@ -60,8 +60,8 @@
     /**
      * Store `data` under `key` with a TTL in milliseconds.
      * @param {string} key
-     * @param {*}      data   — must be JSON-serialisable
-     * @param {number} ttlMs  — e.g. 7 * 24 * 60 * 60 * 1000 for 7 days
+     * @param {*}      data   - must be JSON-serialisable
+     * @param {number} ttlMs  - e.g. 7 * 24 * 60 * 60 * 1000 for 7 days
      */
     set: function (key, data, ttlMs) {
       if (!HAS_STORAGE) return;
@@ -69,12 +69,12 @@
         var entry = { ts: Date.now(), ttl: ttlMs, data: data };
         localStorage.setItem(PREFIX + key, JSON.stringify(entry));
       } catch (e) {
-        // Quota exceeded or serialisation error — fail silently
+        // Quota exceeded or serialisation error - fail silently
       }
     },
 
     /**
-     * Clear a single key, or — if called with no argument — clear every
+     * Clear a single key, or - if called with no argument - clear every
      * entry written by this module (keys prefixed with `apicache_`).
      */
     clear: function (key) {
@@ -109,7 +109,7 @@
     }
   };
 
-  /* ?flush URL param — clears all cache entries and reloads without param */
+  /* ?flush URL param - clears all cache entries and reloads without param */
   if (HAS_STORAGE && window.location.search.indexOf("flush") !== -1) {
     var toRemove = [];
     for (var i = 0; i < localStorage.length; i++) {

@@ -8,19 +8,19 @@ js:
 d3: true
 ---
 
-<h6 id="race-header">—</h6>
+<h6 id="race-header">-</h6>
 
 <div class="hero-stats">
   <div class="hero-stat" id="hero-winner">
-    <span class="hero-stat__value">—</span>
+    <span class="hero-stat__value">-</span>
     <span class="hero-stat__label">Race Winner</span>
   </div>
   <div class="hero-stat" id="hero-fastest-lap">
-    <span class="hero-stat__value">—</span>
+    <span class="hero-stat__value">-</span>
     <span class="hero-stat__label">Fastest Lap</span>
   </div>
   <div class="hero-stat" id="hero-laps">
-    <span class="hero-stat__value">—</span>
+    <span class="hero-stat__value">-</span>
     <span class="hero-stat__label">Race Laps</span>
   </div>
 </div>
@@ -31,12 +31,12 @@ But the headline of Shanghai wasn't just the Silver Arrows running away with it.
 
 Let's get into the details of the weekend after the exciting [Sprint race on Saturday](/posts/f1-2026-china-sprint/).
 
-###### Section 01 — Final Standings
+###### Section 01 - Final Standings
 ---
 
 <div class="bleed-90">
   <div id="chart-gap" class="chart"></div>
-  <div class="chart-title">Final Standings — Gap to Leader (Top 10)</div>
+  <div class="chart-title">Final Standings - Gap to Leader (Top 10)</div>
   <div class="chart-caption">Drivers who finished a lap down are shown with a fixed bar. Gap values are final race intervals from the timing system.</div>
 </div>
 
@@ -44,18 +44,18 @@ Mercedes' 1-2 looks dominant, and quite frankly, it was. Russell backed up his S
 
 Behind them, Ferrari secured a podium with Hamilton after a wheel-to-wheel thriller with his teammate Charles Leclerc during the entire race. The Scuderia clearly has the second-fastest car on the grid right now, but bridging that delta to Mercedes is going to require serious, aggressive development.
 
-And looking at the midfield — Bearman in P5, Gasly in P6, and rookie Liam Lawson dragging the Racing Bulls to P7. The new regulations have absolutely scrambled the order behind the top two teams.
+And looking at the midfield - Bearman in P5, Gasly in P6, and rookie Liam Lawson dragging the Racing Bulls to P7. The new regulations have absolutely scrambled the order behind the top two teams.
 
-###### Section 02 — Race Strategy
+###### Section 02 - Race Strategy
 ---
 
 <div class="bleed-90">
   <div id="chart-stint"></div>
-  <div class="chart-title">Tyre Stints — Top 10 Finishers</div>
+  <div class="chart-title">Tyre Stints - Top 10 Finishers</div>
   <div class="chart-caption">Vertical markers indicate VSC/SC deployment laps. Stint lengths shown inside each block.</div>
 </div>
 
-The Sprint race on Saturday gave the pit wall a preview of tyre degradation. Mercedes controlled it beautifully, leading the race entirely from the front after the first couple of laps. They ran an optimized strategy that gave Antonelli the clean air he needed to manage his battery deployment — an undeniably critical factor in these 2026 regulations. 
+The Sprint race on Saturday gave the pit wall a preview of tyre degradation. Mercedes controlled it beautifully, leading the race entirely from the front after the first couple of laps. They ran an optimized strategy that gave Antonelli the clean air he needed to manage his battery deployment - an undeniably critical factor in these 2026 regulations. 
 
 <div class="bleed-90">
   <div id="chart-pit-times" class="chart"></div>
@@ -65,20 +65,20 @@ The Sprint race on Saturday gave the pit wall a preview of tyre degradation. Mer
 
 Ferrari threw everything they had at the leaders, but they simply lacked the overall efficiency of the Mercedes power unit on the long 1.2km back straight. And even with the almost perfect double stack, they still couldn't bridge the gap.
 
-###### Section 03 — Race Pace
+###### Section 03 - Race Pace
 ---
 
 <div class="bleed-90">
   <div id="chart-pace" class="chart"></div>
-  <div class="chart-title">Race Pace — Clean Air Laps Only</div>
+  <div class="chart-title">Race Pace - Clean Air Laps Only</div>
   <div class="chart-caption">Box spans the middle 50% of clean laps. Vertical line is median, dot is mean. Whiskers are min/max after outlier removal. Hover for full stats.</div>
 </div>
 
-Mercedes sits comfortably at the top of the pace charts, with Antonelli laying down controlled, nearly identical laps perfectly managing his energy deployment to secure the 1-2 finish. Ferrari's pace behind them was also remarkably strong — Hamilton and Leclerc were closely matched and separated themselves comfortably from the midfield, but they simply lacked the crucial few tenths lap-after-lap needed to truly challenge the Silver Arrows.
+Mercedes sits comfortably at the top of the pace charts, with Antonelli laying down controlled, nearly identical laps perfectly managing his energy deployment to secure the 1-2 finish. Ferrari's pace behind them was also remarkably strong - Hamilton and Leclerc were closely matched and separated themselves comfortably from the midfield, but they simply lacked the crucial few tenths lap-after-lap needed to truly challenge the Silver Arrows.
 
 Further down, the midfield pace reveals a fascinatingly tight scramble. Bearman extracted every ounce of performance out of the Haas to secure P5, producing a clean, unwavering pace trace that punches well above the car's expected weight class. Gasly and Lawson sit right on his heels, a clear sign that the new regulations have successfully compressed the pack behind the front-runners and opened the door for genuine midfield dogfights.
 
-###### Section 04 — Driver Spotlight
+###### Section 04 - Driver Spotlight
 ---
 
 <div id="driver-cards" class="driver-cards">
@@ -125,7 +125,7 @@ Further down, the midfield pace reveals a fascinatingly tight scramble. Bearman 
 
 </div>
 
-###### Section 05 — Championship Standings
+###### Section 05 - Championship Standings
 ---
 
 <div class="bleed-90">
@@ -144,10 +144,10 @@ Mercedes isn't just leading; they're threatening to run away with it early. With
 
 Ferrari firmly holds second, but they desperately need to find raw pace to challenge for wins instead of just podiums. Red Bull and McLaren, on the other hand, are already looking at mountainous deficits. It's a long 24-race season, but in Formula 1, an early advantage in a new regulation cycle often dictates the destiny of the entire year.
 
-Box, box — see you next race. 🏎️
+Box, box - see you next race. 🏎️
 
 <div class="next-race">
   <div class="next-race__label">Up Next</div>
-  <div class="next-race__title" id="next-race-title">—</div>
-  <div class="next-race__meta" id="next-race-meta">—</div>
+  <div class="next-race__title" id="next-race-title">-</div>
+  <div class="next-race__meta" id="next-race-meta">-</div>
 </div>
