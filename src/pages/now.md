@@ -84,4 +84,4 @@ This is a <a href="https://nownownow.com/about" target="_blank" rel="noopener no
 
 - **Building an "Ask Me Anything" concept** Still in the early stages - more on this soon.
 
-- **Moving from WordPress to 11ty** This site is currently being [rebuilt from the ground up](/posts/from-wordpress-to-11ty/). Turns out rebuilding your site from scratch is a great way to learn you've been doing things the hard way.
+- **Moving from WordPress to 11ty** This site is currently being [rebuilt from the ground up](/posts/from-wordpress-to-ssg/). Turns out rebuilding your site from scratch is a great way to learn you've been doing things the hard way.
