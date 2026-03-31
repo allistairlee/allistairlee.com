@@ -59,7 +59,7 @@ _Last updated: **{{ page.date | formatDate }}**_
           else if (weatherCode >= 96 && weatherCode <= 99) weatherDesc = "⛈️ Thunderstorm with hail";
 
           const tempF = Math.round(current.temperature_2m * 9 / 5 + 32);
-          infoDiv.textContent = `It's currently ${timeString} and ${temp}°C / ${tempF}°F — ${weatherDesc} in ${city}.`;
+          infoDiv.textContent = `It's currently ${timeString} and ${temp}°C / ${tempF}°F - ${weatherDesc} in ${city}.`;
           return;
         }
       }
@@ -68,20 +68,20 @@ _Last updated: **{{ page.date | formatDate }}**_
       infoDiv.textContent = ` It's currently ${timeString} in ${city}.`;
 
     } catch (e) {
-      // Silently fail — likely blocked by an ad blocker or privacy extension
+      // Silently fail - likely blocked by an ad blocker or privacy extension
       infoDiv.textContent = '';
     }
   })();
 </script>
 
-This is a <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer">/now page</a> — a snapshot of what I'm up to at this point in my life.
+This is a <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer">/now page</a> - a snapshot of what I'm up to at this point in my life.
 
-- **Business Intelligence Analyst @ Bayer Crop Science** Day-to-day, I'm building out BI tooling for teams to make better operational decisions. Still figuring out a lot as I go, which keeps it interesting.
+- **Business Intelligence Analyst @ Bayer Crop Science** I'm currently building out BI tools that help teams make better operational decisions as there's always something new to figure out - which, honestly, is how I like it.
 
-- **The One Minute Manager** by *Ken Blanchard* Short book, but there's more to chew on than I expected. The One Minute Reprimand section especially made me think about how I give (and receive) feedback.
+- **Reading *The One Minute Manager* by Ken Blanchard** A deceptively short read with plenty to chew on. The section on the "One Minute Reprimand" especially has me rethinking how I give and receive feedback.
 
-- **Learning** Communication masterclass with Vinh Giang.
+- **Sharpening my voice** with Vinh Giang's communication masterclass. Turns out how you say something matters as much as what you're saying. Still working on that.
 
-- **Project** Sitting on an ask-me-anything concept. Shipping soon.
+- **Building an "Ask Me Anything" concept** Still in the early stages - more on this soon.
 
-- **Personal site** Moving [from WordPress to 11ty](/posts/from-wordpress-to-11ty/). It's been a fun journey so far.
+- **Moving from WordPress to 11ty** This site is currently being [rebuilt from the ground up](/posts/from-wordpress-to-11ty/). Turns out rebuilding your site from scratch is a great way to learn you've been doing things the hard way.

@@ -4,8 +4,8 @@ layout: home
 
 Hey there! <span class="wave">👋</span> Welcome to my corner of the internet.
 
-I believe the hardest problems aren't solved by adding more noise - they're solved by asking the right questions with clear intention.
+I tend to think in systems. Not because it's trendy, but because most problems people call "complicated" are really just "nobody stopped to ask the right question."
 
-Whether I'm architecting data strategies or exploring a new curiosity, my focus is always the same: stripping away the noise to find the signal. For me, finding what actually matters is the goal; providing the clarity to get there is the path.
+That's where strategy and innovation live - in the gap between what the data says and what nobody's done about it yet.
 
-This space is my digital garden - a collection of [reflections](/posts), [growing ideas](/notes), and the occasional rabbit hole. If something here resonates, see what I'm working on [now](/now).
+This is my corner of the internet where I write about [reflections](/posts), [thoughts](/notes), and the occasional rabbit hole. Take a look at what I'm up to [now](/now).
