@@ -267,6 +267,15 @@
     overflow-x: hidden;
   }
 
+  /* On mobile, disable the bleed so charts match paragraph width */
+  @media (max-width: 767px) {
+    .bleed-90 {
+      width: 100%;
+      left: 0;
+      transform: none;
+    }
+  }
+
   /* Home page hero */
   .home {
     display: flex;
