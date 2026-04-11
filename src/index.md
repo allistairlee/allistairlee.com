@@ -4,8 +4,8 @@ layout: home
 
 Hey there! <span class="wave">👋</span> Welcome to my corner of the internet.
 
-I tend to think in systems. Not because it's trendy, but because most problems people call "complicated" are really just "nobody stopped to ask the right question."
+I tend to think in systems. Not because it's trendy, but because most problems people call "complicated" are really just _the wrong question, asked for too long_.
 
-That's where strategy and innovation live - in the gap between what the data says and what nobody's done about it yet.
+Strategy and innovation live in that gap: between what the data says and what nobody's acted on yet.
 
-This is my corner of the internet where I write about [reflections](/posts), [thoughts](/notes), and the occasional rabbit hole. Take a look at what I'm up to [now](/now).
+This is where I work through it out loud: [reflections](/posts), and things worth [thinking about](/notes). Take a look at what I'm up to [now](/now).
