@@ -1,6 +1,6 @@
-# Repository for [www.allistairlee.com](https://www.allistairlee.com)
+# Repository for [allistairlee.com](https://allistairlee.com)
 
-Welcome to the repository for **allistairlee.com**! This project uses [11ty (Eleventy)](https://www.11ty.dev/) to generate a fast, modern static website currently hosted at [www.allistairlee.com](https://www.allistairlee.com).
+Welcome to the repository for **allistairlee.com**! This project uses [11ty (Eleventy)](https://www.11ty.dev/) to generate a fast, modern static website currently hosted at [allistairlee.com](https://allistairlee.com).
 
 ## Table of Contents
 
