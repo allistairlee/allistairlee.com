@@ -1,9 +1,9 @@
 ---
 title: Data Breaches, and the Illusion of Security
 css:
-  - /posts/personal/data-breaches/data-breaches.css
+  - /posts/analytics/data-breaches/data-breaches.css
 js:
-  - /posts/personal/data-breaches/data-breaches.js
+  - /posts/analytics/data-breaches/data-breaches.js
 d3: true
 ---
 

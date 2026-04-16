@@ -1,7 +1,3 @@
-# Repository for [www.allistairlee.com](https://www.allistairlee.com)
-
-Welcome to the repository for **allistairlee.com**! This project uses [11ty (Eleventy)](https://www.11ty.dev/) to generate a fast, modern static website currently hosted at [www.allistairlee.com](https://www.allistairlee.com).
-
 ## Table of Contents
 
 - [Overview](#overview)
@@ -12,7 +8,7 @@ Welcome to the repository for **allistairlee.com**! This project uses [11ty (Ele
 
 ## Overview
 
-This repository contains the source code for **www.allistairlee.com**. Built with 11ty, the project emphasizes simplicity, performance, and modern web development best practices. The site’s content, templates, and assets are all maintained here.
+This repository contains the source code for [allistairlee.com](https://allistairlee.com). Built with [11ty (Eleventy)](https://www.11ty.dev/), the project emphasizes simplicity, performance, and modern web development best practices. The site’s content, templates, and assets are all maintained here.
 
 ## Features
 
